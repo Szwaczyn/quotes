@@ -1,16 +1,12 @@
 package com.szwaczyk.quotes.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.szwaczyk.quotes.controller.rest.QuoteRestController;
 
 @Entity
 public class Quote {
@@ -21,10 +17,17 @@ public class Quote {
 	
 	private String content;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "author")
 	private Author author;
-
+	
+	public Quote() {}
+	
+	public Quote(String content, Author author) {
+		this.content = content;
+		this.author = author;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -51,26 +54,20 @@ public class Quote {
 	
 	public static class Builder{
 		
-		private Quote quote;
-		Logger logger = LoggerFactory.getLogger(Quote.Builder.class);
-		
-		public Builder() {
-			this.quote = new Quote();
-		}
+		private String content;
+		private Author author;
 		
 		public Quote build() {
-			return this.quote;
+			return new Quote(content, author);
 		}
 		
 		public Builder content(String content) {
-			this.quote.content = content;
-			
+			this.content = content;
 			return this;
 		}
 		
 		public Builder author(Author author) {
-			this.quote.author = author;
-			
+			this.author = author;
 			return this;
 		}
 	}

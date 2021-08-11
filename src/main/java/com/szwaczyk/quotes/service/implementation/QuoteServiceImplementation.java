@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.szwaczyk.quotes.model.Author;
 import com.szwaczyk.quotes.model.Quote;
 import com.szwaczyk.quotes.repository.QuoteRepository;
 import com.szwaczyk.quotes.service.interfaces.QuoteService;
@@ -17,10 +16,14 @@ import com.szwaczyk.quotes.service.interfaces.QuoteService;
 @Service
 public class QuoteServiceImplementation implements QuoteService{
 
-	@Autowired
 	private QuoteRepository quoteRepository;
 	
-	Logger logger = LoggerFactory.getLogger(QuoteServiceImplementation.class);
+	private Logger logger = LoggerFactory.getLogger(QuoteServiceImplementation.class);
+	
+	@Autowired	
+	public QuoteServiceImplementation(QuoteRepository quoteRepository) {
+		this.quoteRepository = quoteRepository;
+	}
 	
 	@Override
 	public boolean save(Quote quote) {

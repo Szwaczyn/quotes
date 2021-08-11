@@ -1,14 +1,9 @@
 package com.szwaczyk.quotes.model;
 
-import java.util.Collection;
-import java.util.Set;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Author {
@@ -20,7 +15,14 @@ public class Author {
 	private String name;
 	
 	private String surname;
-
+	
+	public Author() {}
+	
+	public Author(String name, String surname) {
+		this.name = name;
+		this.surname = surname;
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -46,23 +48,20 @@ public class Author {
 	}
 
 	public static class Builder{
-		private Author author;
-		
-		public Builder() {
-			this.author = new Author();
-		}
+		private String name;
+		private String surname;
 		
 		public Author build() {
-			return this.author;
+			return new Author(this.name, this.surname);
 		}
 		
 		public Builder name(String name) {
-			this.author.name = name;
+			this.name = name;
 			return this;
 		}
 		
 		public Builder suranem(String surname) {
-			this.author.surname = surname;
+			this.surname = surname;
 			return this;
 		}
 		

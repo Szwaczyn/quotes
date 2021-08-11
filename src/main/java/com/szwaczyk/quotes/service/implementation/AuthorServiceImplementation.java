@@ -9,17 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.szwaczyk.quotes.model.Author;
-import com.szwaczyk.quotes.model.Quote;
 import com.szwaczyk.quotes.repository.AuthorRepository;
 import com.szwaczyk.quotes.service.interfaces.AuthorService;
 
 @Service
 public class AuthorServiceImplementation implements AuthorService {
 
-	@Autowired
 	private AuthorRepository authorRepository;
 	
-	Logger logger = LoggerFactory.getLogger(AuthorServiceImplementation.class);
+	private Logger logger = LoggerFactory.getLogger(AuthorServiceImplementation.class);
+	
+	@Autowired
+	public AuthorServiceImplementation(AuthorRepository authorRepository) {
+		this.authorRepository = authorRepository;
+	}
 	
 	@Override
 	public boolean save(Author author) {
@@ -51,18 +54,16 @@ public class AuthorServiceImplementation implements AuthorService {
 	public Author findByNameAndSurname(String name, String surname) {
 		Author author = authorRepository.findByNameAndSurname(name, surname);
 		
-		if(author == null && name != null && surname != null) {
-			author = new Author.Builder()
-					.name(name)
-					.suranem(surname)
-					.build();
-			
-			authorRepository.save(author);
-			logger.info("Author created with id " + author.getId());
-		}
-		
 		return author;
 	}
 
+	@Override
+	public Author findByAuthor(Author author) {
+		if(author == null) return null;
+		
+		return this.findByNameAndSurname(author.getName(), author.getSurname());
+	}
+	
+	
 	
 }
